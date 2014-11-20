@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Random;
 
 public class Schedule
 {
@@ -19,6 +21,12 @@ public class Schedule
    * Collection of gamedays in the season
    */
   ArrayList<GameDay> gameDays;
+  
+  /**
+   * Median school distances
+   */
+  
+  static int MEDIAN_DISTANCE = 217;
 
   // +--------------+----------------------------------------------------
   // | Constructors |
@@ -45,7 +53,46 @@ public class Schedule
    */
   public void scheduleGames()
   {
-    //STUB
+    Random random = new Random();
+    for(GameDay gameDay: this.gameDays){
+     
+      while(gameDay.mustPlay.size() != 0){
+        
+        //pick a random index to select team from mustPlay
+        int randomIndex = random.nextInt(gameDay.mustPlay.size());
+        
+        //get school at randomIndex as home team
+        School home = gameDay.mustPlay.get(randomIndex);
+        gameDay.mustPlay.remove(randomIndex);
+        
+        //get school for away
+        
+        School away = awayChooser(gameDay.mustPlay,gameDay.canPlay,
+                                  home.distances);
+        
+        //set up match
+        gameDay.matches.add(new Match(home,away));      
+      }//while
+      while(gameDay.canPlay.size() > 0){
+      int randIndex = random.nextInt(gameDay.canPlay.size());
+      
+      //get school at random Index as home team
+      
+      School home = gameDay.canPlay.get(randIndex);
+      gameDay.canPlay.remove(randIndex);
+      
+      //get away school
+      
+      School away = awayChooser(gameDay.canPlay,home.distances);
+     
+      //set up match
+      gameDay.matches.add(new Match(home,away));
+      
+      // when there is only one school left in canPlay
+        if(gameDay.canPlay.size() == 1)
+          break;
+      }//while
+    }//for
   } // scheduleGames()
   
   /**
@@ -118,6 +165,10 @@ public class Schedule
     this.gameDays.add(gameDay);
   } // loadDates(String)
 
+  /**
+   * Prints the schedule
+   * @param pen
+   */
   @SuppressWarnings("static-access")
   public void printSchedule(PrintWriter pen)
   {
@@ -134,5 +185,57 @@ public class Schedule
 
     pen.println("*SCHEDULE GOES HERE*");
   } // printSchedule(PrintWriter)
+  
+  public School awayChooser(ArrayList<School> mustPlay,
+                            ArrayList<School> canPlay,
+                            Hashtable<String, Integer> distances){
+     Random random = new Random();        
+    while((mustPlay.size() > 0) && anyWithinDistance(mustPlay,distances)){
+        int r = random.nextInt(mustPlay.size());
+        
+        /*
+         School temp = mustPlay.get(r)
+         
+         traverse home.distances for key watching temp.key and check value
+         against median
+         
+         if it works
+         mustPlay.remove(r)
+         return temp;
+         
+         
+         
+         
+     while(canplay.size > 0 && anyWithinDistance(canPlay, distances){
+     
+     r = random.nextInt(canPlay.size)
+     
+     School temp = canPlay.get(r);
+     
+     tranvers home.distance for temp key and check that value againt
+     the median.
+     
+     if it works
+     
+     canPlay.remove(r)
+     return temp
+     }
+         */
+   
+    }//awayChooser
+    return null;
+  }
+  
+  public School awayChooser(ArrayList<School> canPlay,
+                            Hashtable<String, Integer> distances){
+                              return null;
+                              
+                            }//awayChooser
+  
+  public boolean anyWithinDistance(ArrayList<School> mustPlay,
+                                 Hashtable<String, Integer> distances){
+                                   return false;
+  }//anyWithDistance
+                    
 } // Schedule  
 
