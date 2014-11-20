@@ -67,12 +67,12 @@ public class TextualUserInterface
     PrintWriter pen = new PrintWriter(System.out, true);
     BufferedReader eyes = new BufferedReader(new InputStreamReader(System.in));
     String[] filePaths = getFilePaths(eyes, pen);
-    Schedule schedule = null;
+    MidwestConference schedule = null;
     while (schedule == null)
       {
         try
           {
-            schedule = new Schedule(filePaths[0], filePaths[1]);
+            schedule = new MidwestConference(filePaths[0], filePaths[1]);
           } // try
         catch (Exception e)
           {

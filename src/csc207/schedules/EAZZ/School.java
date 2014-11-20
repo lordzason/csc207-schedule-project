@@ -26,11 +26,11 @@ public class School
   // | Constructors |
   // +--------------+
   
-  public School(String name, String key)
+  public School(String name, String key, Hashtable<String, Integer> distances)
   {
     this.name = name;
     this.key = key;
-    // NEED TO INPUT DISTANCES
+    this.distances = distances;
   } // School(String, String)
   
   // +-----------+-------------------------------------------------------

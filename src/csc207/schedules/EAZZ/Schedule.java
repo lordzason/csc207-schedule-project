@@ -47,6 +47,15 @@ public class Schedule
   {
     //STUB
   } // scheduleGames()
+  
+  /**
+   * adds the school to the list of schools.
+   * @param school
+   */
+  public void addSchool(School school)
+  {
+    this.schools.add(school);
+  } // addSchool(School)
 
   // +-----------------+-------------------------------------------------
   // | Local Utilities |
