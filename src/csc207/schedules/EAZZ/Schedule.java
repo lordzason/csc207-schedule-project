@@ -3,6 +3,7 @@ package csc207.schedules.EAZZ;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Schedule
@@ -35,6 +36,18 @@ public class Schedule
     readInput(dateFilePath, specDateFilePath);
   } // Schedule(String, String)
 
+  // +----------+-------------------------------------------------
+  // | Mutators |
+  // +----------+ 
+  /**
+   * Schedules games given the schools and dates in the schedule and sets
+   * matches within gameDays.
+   */
+  public void scheduleGames()
+  {
+    //STUB
+  } // scheduleGames()
+
   // +-----------------+-------------------------------------------------
   // | Local Utilities |
   // +-----------------+
@@ -52,19 +65,19 @@ public class Schedule
     String result;
     BufferedReader br = new BufferedReader(new FileReader(specDates));
     result = br.readLine();
-    while((result = br.readLine()) != null)
+    while ((result = br.readLine()) != null)
       {
         loadSpecDates(result);
       } // while
     BufferedReader br2 = new BufferedReader(new FileReader(dates));
-    while((result = br2.readLine()) != null)
+    while ((result = br2.readLine()) != null)
       {
         loadDates(result);
       } // while
     br.close();
     br2.close();
   } // readInput(String, String)
-  
+
   /**
    * Sets information in the object based on information in the special dates
    * file.
@@ -75,11 +88,10 @@ public class Schedule
     throws Exception
   {
     String[] tmp = result.split("\\s+");
-    SimpleDate date = new SimpleDate(tmp[0]);
-    GameDay gameDay = new GameDay(date);
-    for(int i = 0; i < tmp.length; i++)
+    GameDay gameDay = new GameDay(tmp[0]);
+    for (int i = 0; i < tmp.length; i++)
       {
-        gameDay.setAvailability(tmp[i+1], this.schools.get(i));
+        gameDay.setAvailability(tmp[i + 1], this.schools.get(i));
       } // for
     this.gameDays.add(gameDay);
   } // loadSpecDates(String)
@@ -89,10 +101,29 @@ public class Schedule
    * @param result
    * @throws Exception 
    */
-  void loadDates(String result) throws Exception
+  void loadDates(String result)
+    throws Exception
   {
-    GameDay gameDay = new GameDay(new SimpleDate(result));
+    GameDay gameDay = new GameDay(result);
     gameDay.setAvailability("M", this.schools);
     this.gameDays.add(gameDay);
   } // loadDates(String)
-} // Schedule
+
+  @SuppressWarnings("static-access")
+  public void printSchedule(PrintWriter pen)
+  {
+    //STUB
+    for (GameDay day : this.gameDays)
+      {
+        pen.print(day.date.MONTH + "/" + day.date.DATE + "/" + day.date.YEAR);
+        ArrayList<Match> matches = day.matches;
+        for(Match m : matches)
+          {
+            pen.print(" " + m.home + " vs. " + m.away);
+          } // for
+      } // for gameDays
+
+    pen.println("*SCHEDULE GOES HERE*");
+  } // printSchedule(PrintWriter)
+} // Schedule  
+

@@ -1,6 +1,9 @@
 package csc207.schedules.EAZZ;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GameDay
 {
@@ -10,7 +13,7 @@ public class GameDay
   /**
    * Date of the game.
    */
-  SimpleDate date;
+  Calendar date = Calendar.getInstance();
 
   /**
    * ArrayList of schools that must play this day
@@ -40,15 +43,22 @@ public class GameDay
    * @param month
    * @param day
    * @param year
+   * @throws ParseException 
    */
-  public GameDay(SimpleDate date)
+  public GameDay(String str) throws ParseException
   {
-    this.date = date;
+    this.date.setTime(new SimpleDateFormat("MM/dd/yy").parse(str));
   } // GameDay(int, int, int)
 
   // +-----------+-------------------------------------------------------
   // | Observers |
   // +-----------+
+  @SuppressWarnings("static-access")
+  public boolean isWeekend()
+  {
+    int day = this.date.DAY_OF_WEEK;
+    return day == 1 || day == 6 || day == 7;
+  } // isWeekend
 
   // +----------+--------------------------------------------------------
   // | Mutators |
@@ -94,4 +104,5 @@ public class GameDay
         this.setAvailability(type, schools.get(i));
       } // for 
   } // setAvailability
+  
 } // GameDay

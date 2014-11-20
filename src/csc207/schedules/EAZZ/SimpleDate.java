@@ -1,5 +1,7 @@
 package csc207.schedules.EAZZ;
 
+//DEPRECATED! AH!
+
 public class SimpleDate
 {
   // +--------+----------------------------------------------------------
