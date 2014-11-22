@@ -36,7 +36,23 @@ public class School
   // +-----------+-------------------------------------------------------
   // | Observers |
   // +-----------+
+  /**
+   * Returns the School's name.
+   * @return
+   */
+  public String name()
+  {
+    return this.name;
+  } // name()
   
+  /**
+   * Returns the School's key.
+   * @return
+   */
+  public String key()
+  {
+    return this.key;
+  } // key()
   // +----------+--------------------------------------------------------
   // | Mutators |
   // +----------+

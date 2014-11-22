@@ -15,7 +15,8 @@ public class TextualUserInterface
    * @return
    * @throws IOException
    */
-  public static String getInput(BufferedReader eyes, PrintWriter pen, String prompt)
+  public static String getInput(BufferedReader eyes, PrintWriter pen,
+                                String prompt)
     throws IOException
   {
     pen.println(prompt);
@@ -33,6 +34,9 @@ public class TextualUserInterface
   static String[] getFilePaths(BufferedReader eyes, PrintWriter pen)
   {
     String[] results = new String[2];
+    // Hack!
+    results[0] = "/home/wolterzo/CSC207/Git/csc207-schedule-project/sampleDateFile.txt";
+    results[1] = "/home/wolterzo/CSC207/Git/csc207-schedule-project/sampleSpecFile.txt";
     while (results[0] == null)
       {
         try
@@ -63,6 +67,7 @@ public class TextualUserInterface
   } // getFilePaths
 
   public static void main(String[] args)
+    throws Exception
   {
     PrintWriter pen = new PrintWriter(System.out, true);
     BufferedReader eyes = new BufferedReader(new InputStreamReader(System.in));

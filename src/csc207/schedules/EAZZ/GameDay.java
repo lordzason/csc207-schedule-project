@@ -18,22 +18,22 @@ public class GameDay
   /**
    * ArrayList of schools that must play this day
    */
-  ArrayList<School> mustPlay;
+  ArrayList<School> mustPlay = new ArrayList<School>();
 
   /**
    * ArrayList of schools that can play this day
    */
-  ArrayList<School> canPlay;
+  ArrayList<School> canPlay = new ArrayList<School>();
 
   /**
    * ArrayList of schools that can't play this day
    */
-  ArrayList<School> cannotPlay;
+  ArrayList<School> cannotPlay = new ArrayList<School>();
 
   /**
    * ArrayList of matches that will happen that day. 
    */
-  ArrayList<Match> matches;
+  ArrayList<Match> matches = new ArrayList<Match>();
 
   // +--------------+----------------------------------------------------
   // | Constructors |

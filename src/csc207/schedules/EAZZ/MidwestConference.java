@@ -25,7 +25,6 @@ public class MidwestConference
   public MidwestConference(String dateFilePath, String specDateFilePath)
                                                                         throws Exception
   {
-    super(dateFilePath, specDateFilePath);
     populateHashtables();
     this.addSchool(new School("Beloit College", "BC", BCDistances));
     this.addSchool(new School("Cornell College", "CC", CCDistances));
@@ -37,7 +36,22 @@ public class MidwestConference
     this.addSchool(new School("Monmouth College", "MC", MCDistances));
     this.addSchool(new School("Ripon College", "RC", RCDistances));
     this.addSchool(new School("St. Norbert College", "SNC", SNCDistances));
-    // TODO Auto-generated constructor stub
+    this.readInput(dateFilePath, specDateFilePath);
+  } // MidwestConference(String, String)
+  
+  public MidwestConference()
+  {
+    super();
+    this.addSchool(new School("Beloit College", "BC", BCDistances));
+    this.addSchool(new School("Cornell College", "CC", CCDistances));
+    this.addSchool(new School("Grinnell College", "GC", GCDistances));
+    this.addSchool(new School("Illinois College", "IC", ICDistances));
+    this.addSchool(new School("Knox College", "KC", KCDistances));
+    this.addSchool(new School("Lake Forest College", "LFC", LFCDistances));
+    this.addSchool(new School("Lawrence University", "LU", LUDistances));
+    this.addSchool(new School("Monmouth College", "MC", MCDistances));
+    this.addSchool(new School("Ripon College", "RC", RCDistances));
+    this.addSchool(new School("St. Norbert College", "SNC", SNCDistances));
   }
 
   private void populateHashtables()

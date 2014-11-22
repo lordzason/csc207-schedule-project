@@ -16,11 +16,11 @@ public class Schedule
   /**
    * Collection of schools in the conference
    */
-  ArrayList<School> schools;
+  ArrayList<School> schools = new ArrayList<School>();
   /**
    * Collection of gamedays in the season
    */
-  ArrayList<GameDay> gameDays;
+  ArrayList<GameDay> gameDays = new ArrayList<GameDay>();
   
   /**
    * Median school distances
@@ -44,6 +44,10 @@ public class Schedule
     readInput(dateFilePath, specDateFilePath);
   } // Schedule(String, String)
 
+  public Schedule()
+  {
+    
+  }
   // +----------+-------------------------------------------------
   // | Mutators |
   // +----------+ 
@@ -145,9 +149,9 @@ public class Schedule
   {
     String[] tmp = result.split("\\s+");
     GameDay gameDay = new GameDay(tmp[0]);
-    for (int i = 0; i < tmp.length; i++)
+    for (int i = 1; i < tmp.length; i++)
       {
-        gameDay.setAvailability(tmp[i + 1], this.schools.get(i));
+        gameDay.setAvailability(tmp[i], this.schools.get(i - 1));
       } // for
     this.gameDays.add(gameDay);
   } // loadSpecDates(String)
@@ -179,7 +183,7 @@ public class Schedule
         ArrayList<Match> matches = day.matches;
         for(Match m : matches)
           {
-            pen.print(" " + m.home + " vs. " + m.away);
+            pen.print(" " + m.home.key() + " vs. " + m.away.key());
           } // for
       } // for gameDays
 
