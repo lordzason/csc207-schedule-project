@@ -65,6 +65,14 @@ public class TextualUserInterface
       } // while
     return results;
   } // getFilePaths
+  
+  public static void printDateFileFormat(Schedule schedule, PrintWriter pen)
+  {
+    pen.println("The date file should have the following format.");
+    pen.println("It should contain the days that any team is able to play.");
+    pen.println();
+    
+  } // printDateFileFormat()
 
   public static void main(String[] args)
     throws Exception
@@ -86,6 +94,6 @@ public class TextualUserInterface
           } // catch
       } // while
     schedule.scheduleGames();
-    schedule.printSchedule(pen);
+    //schedule.printSchedule(pen);
   } // main(String[])
 } // TextualUserInterface

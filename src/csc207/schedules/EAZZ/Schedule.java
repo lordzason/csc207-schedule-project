@@ -21,12 +21,12 @@ public class Schedule
    * Collection of gamedays in the season
    */
   ArrayList<GameDay> gameDays = new ArrayList<GameDay>();
-  
+
   /**
    * Median school distances
    */
-  
-  static int MEDIAN_DISTANCE = 217;
+
+  static int MEDIAN_DISTANCE = 270;
 
   // +--------------+----------------------------------------------------
   // | Constructors |
@@ -46,8 +46,9 @@ public class Schedule
 
   public Schedule()
   {
-    
+
   }
+
   // +----------+-------------------------------------------------
   // | Mutators |
   // +----------+ 
@@ -58,47 +59,120 @@ public class Schedule
   public void scheduleGames()
   {
     Random random = new Random();
-    for(GameDay gameDay: this.gameDays){
-     
-      while(gameDay.mustPlay.size() != 0){
-        
-        //pick a random index to select team from mustPlay
-        int randomIndex = random.nextInt(gameDay.mustPlay.size());
-        
-        //get school at randomIndex as home team
-        School home = gameDay.mustPlay.get(randomIndex);
-        gameDay.mustPlay.remove(randomIndex);
-        
-        //get school for away
-        
-        School away = awayChooser(gameDay.mustPlay,gameDay.canPlay,
-                                  home.distances);
-        
-        //set up match
-        gameDay.matches.add(new Match(home,away));      
-      }//while
-      while(gameDay.canPlay.size() > 0){
-      int randIndex = random.nextInt(gameDay.canPlay.size());
-      
-      //get school at random Index as home team
-      
-      School home = gameDay.canPlay.get(randIndex);
-      gameDay.canPlay.remove(randIndex);
-      
-      //get away school
-      
-      School away = awayChooser(gameDay.canPlay,home.distances);
-     
-      //set up match
-      gameDay.matches.add(new Match(home,away));
-      
-      // when there is only one school left in canPlay
-        if(gameDay.canPlay.size() == 1)
-          break;
-      }//while
-    }//for
+
+    for (GameDay gameDay : this.gameDays)
+      {
+        while (gameDay.mustPlay.size() != 0)
+          {
+
+            //pick a random index to select team from mustPlay
+            int randomIndex = random.nextInt(gameDay.mustPlay.size());
+
+            //get school at randomIndex as home team
+            School home = gameDay.mustPlay.get(randomIndex);
+            gameDay.mustPlay.remove(randomIndex);
+
+            //get school for away
+
+            School away =
+                awayChooser(gameDay.mustPlay, gameDay.canPlay, home,
+                            gameDay.matches);
+
+            //home school cannot find a match in mustPlay and canPlay
+            if (away == null)
+              {
+                //find the closest school
+              }//if
+            else
+              {
+                //update the home
+                home.haveNotPlayed.remove(away);
+
+                if (home.havePlayedOnce.contains(away))
+                  {
+                    home.havePlayedTwice.add(away);
+                  }
+                else
+                  {
+                    home.havePlayedOnce.add(away);
+                  }
+
+                //update the away
+                away.haveNotPlayed.remove(home);
+
+                if (away.havePlayedOnce.contains(home))
+                  {
+                    away.havePlayedTwice.add(home);
+                  }
+                else
+                  {
+                    away.havePlayedOnce.add(home);
+                  }
+
+              }
+
+            //set up match
+            gameDay.matches.add(new Match(home, away));
+          }//while
+
+        while (gameDay.canPlay.size() > 0)
+          {
+            int randIndex = random.nextInt(gameDay.canPlay.size());
+
+            //get school at random Index as home team
+
+            School home = gameDay.canPlay.get(randIndex);
+            gameDay.canPlay.remove(randIndex);
+
+            //get away school
+
+            School away = awayChooser(gameDay.canPlay, home, gameDay.matches);
+
+            //set up match
+
+            if (away == null)
+              {
+                //find the closest school
+              }//if
+            else
+              {
+    
+              //update the home
+                home.haveNotPlayed.remove(away);
+
+                if (home.havePlayedOnce.contains(away))
+                  {
+                    home.havePlayedTwice.add(away);
+                  }
+                else
+                  {
+                    home.havePlayedOnce.add(away);
+                  }
+
+                //update the away
+                away.haveNotPlayed.remove(home);
+
+                if (away.havePlayedOnce.contains(home))
+                  {
+                    away.havePlayedTwice.add(home);
+                  }
+                else
+                  {
+                    away.havePlayedOnce.add(home);
+                  }
+              }
+
+            //set up match
+            gameDay.matches.add(new Match(home, away));
+
+            // when there is only one school left in canPlay
+            if (gameDay.canPlay.size() == 1)
+              break;
+          }//while
+
+      }//for
   } // scheduleGames()
-  
+
   /**
    * adds the school to the list of schools.
    * @param school
@@ -181,7 +255,7 @@ public class Schedule
       {
         pen.print(day.date.MONTH + "/" + day.date.DATE + "/" + day.date.YEAR);
         ArrayList<Match> matches = day.matches;
-        for(Match m : matches)
+        for (Match m : matches)
           {
             pen.print(" " + m.home.key() + " vs. " + m.away.key());
           } // for
@@ -189,57 +263,78 @@ public class Schedule
 
     pen.println("*SCHEDULE GOES HERE*");
   } // printSchedule(PrintWriter)
-  
+
   public School awayChooser(ArrayList<School> mustPlay,
-                            ArrayList<School> canPlay,
-                            Hashtable<String, Integer> distances){
-     Random random = new Random();        
-    while((mustPlay.size() > 0) && anyWithinDistance(mustPlay,distances)){
-        int r = random.nextInt(mustPlay.size());
-        
-        /*
-         School temp = mustPlay.get(r)
-         
-         traverse home.distances for key watching temp.key and check value
-         against median
-         
-         if it works
-         mustPlay.remove(r)
-         return temp;
-         
-         
-         
-         
-     while(canplay.size > 0 && anyWithinDistance(canPlay, distances){
-     
-     r = random.nextInt(canPlay.size)
-     
-     School temp = canPlay.get(r);
-     
-     tranvers home.distance for temp key and check that value againt
-     the median.
-     
-     if it works
-     
-     canPlay.remove(r)
-     return temp
-     }
-         */
-   
-    }//awayChooser
+                            ArrayList<School> canPlay, School home,
+                            ArrayList<Match> played)
+  {
+    School temp = awayChooser(mustPlay, home, played);
+    if (temp != null)
+      {
+        return temp;
+      }
+    else
+      {
+        return awayChooser(canPlay, home, played);
+      }
+  }//awayChooser
+
+  public School awayChooser(ArrayList<School> possibleSchools, School home,
+                            ArrayList<Match> played)
+  {
+    Random random = new Random();
+
+    //check if there is at least one school that is within distance
+    if (anyWithinDistance(possibleSchools, home.distances))
+      {
+
+        ArrayList<School> temp = possibleSchools;
+
+        //randomly pick a school and check if it is within distance
+        while (temp.size() > 0)
+          {
+            int r = random.nextInt(temp.size());
+
+            School possibleAway = temp.get(r);
+            //check if distance fits requirement
+            if (home.distances.get(possibleAway.key()) <= this.MEDIAN_DISTANCE
+                && notScheduled(possibleAway, played))
+              {
+                int indexInPossibleSchools =
+                    possibleSchools.indexOf(possibleAway);
+                possibleSchools.remove(indexInPossibleSchools);
+                return possibleAway;
+              } // if
+            temp.remove(r);
+          } // while 
+      }//if 
     return null;
-  }
-  
-  public School awayChooser(ArrayList<School> canPlay,
-                            Hashtable<String, Integer> distances){
-                              return null;
-                              
-                            }//awayChooser
-  
+  }//awayChooser
+
   public boolean anyWithinDistance(ArrayList<School> mustPlay,
-                                 Hashtable<String, Integer> distances){
-                                   return false;
+                                   Hashtable<String, Integer> distances)
+  {
+
+    for (int i = 0; i < mustPlay.size(); i++)
+      {
+        if (distances.get(mustPlay.get(i).key) < this.MEDIAN_DISTANCE)
+          {
+            return true;
+          }
+      }
+    return false;
   }//anyWithDistance
-                    
+
+  public boolean notScheduled(School petitioner, ArrayList<Match> matches)
+  {
+
+    for (Match match : matches)
+      {
+        if (match.home == petitioner || match.away == petitioner)
+          return false;
+      }
+    return true;
+  }
+
 } // Schedule  
 
