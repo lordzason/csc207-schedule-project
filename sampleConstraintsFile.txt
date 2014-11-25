@@ -1,0 +1,3 @@
+RC   SNC  LU   BC   LFC  IC   GC   CC   KC   MC
+GC   CC   IC   GC   MC   LU   RC   SNC  LU   LFC
+IC   KC   KC   MC   CC   RC   BC   LFC  SNC  BC
