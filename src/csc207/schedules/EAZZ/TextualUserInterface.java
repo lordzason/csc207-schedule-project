@@ -33,10 +33,11 @@ public class TextualUserInterface
    */
   static String[] getFilePaths(BufferedReader eyes, PrintWriter pen)
   {
-    String[] results = new String[2];
+    String[] results = new String[3];
     // Hack!
     results[0] = "/home/wolterzo/CSC207/Git/csc207-schedule-project/sampleDateFile.txt";
     results[1] = "/home/wolterzo/CSC207/Git/csc207-schedule-project/sampleSpecFile.txt";
+    results[2] = "/home/wolterzo/CSC207/Git/csc207-schedule-project/sampleConstraintsFile.txt";
     while (results[0] == null)
       {
         try
@@ -57,6 +58,19 @@ public class TextualUserInterface
             results[1] =
                 getInput(eyes, pen,
                          "Please enter the file path for the file of special dates:");
+          } // try
+        catch (IOException e)
+          {
+            pen.println("Incorrect input, try again.");
+          } // catch
+      } // while
+    while (results[2] == null)
+      {
+        try
+          {
+            results[2] =
+                getInput(eyes, pen,
+                         "Please enter the file path for the file of constraints:");
           } // try
         catch (IOException e)
           {
@@ -85,7 +99,7 @@ public class TextualUserInterface
       {
         try
           {
-            schedule = new MidwestConference(filePaths[0], filePaths[1]);
+            schedule = new MidwestConference(filePaths[0], filePaths[1], filePaths[2]);
           } // try
         catch (Exception e)
           {
@@ -94,6 +108,6 @@ public class TextualUserInterface
           } // catch
       } // while
     schedule.scheduleGames();
-    //schedule.printSchedule(pen);
+    schedule.printSchedule(pen);
   } // main(String[])
 } // TextualUserInterface

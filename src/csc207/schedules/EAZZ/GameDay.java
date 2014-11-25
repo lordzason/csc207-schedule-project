@@ -105,4 +105,16 @@ public class GameDay
       } // for 
   } // setAvailability
   
+  public void removeSchool(School school)
+  {
+    if(this.mustPlay.contains(school))
+      {
+        this.mustPlay.remove(school);
+      } // if
+    else
+      {
+        this.canPlay.remove(school);
+      } // else
+  } // removeSchool(School)
+  
 } // GameDay

@@ -5,25 +5,35 @@ import java.util.Hashtable;
 public class MidwestConference
     extends Schedule
 {
-  private Hashtable<String, Integer> BCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> CCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> GCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> ICDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> KCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> LFCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> LUDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> MCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> RCDistances = new Hashtable<String, Integer>();
-  private Hashtable<String, Integer> SNCDistances = new Hashtable<String, Integer>();
-  
+  private Hashtable<String, Integer> BCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> CCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> GCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> ICDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> KCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> LFCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> LUDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> MCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> RCDistances =
+      new Hashtable<String, Integer>();
+  private Hashtable<String, Integer> SNCDistances =
+      new Hashtable<String, Integer>();
+
   /**
    * Constructor for loading gameDays
    * @param dateFilePath
    * @param specDateFilePath
    * @throws Exception
    */
-  public MidwestConference(String dateFilePath, String specDateFilePath)
-                                                                        throws Exception
+  public MidwestConference(String dateFilePath, String specDateFilePath,
+                           String constraintsFilePath) throws Exception
   {
     populateHashtables();
     this.addSchool(new School("Beloit College", "BC", BCDistances));
@@ -36,9 +46,10 @@ public class MidwestConference
     this.addSchool(new School("Monmouth College", "MC", MCDistances));
     this.addSchool(new School("Ripon College", "RC", RCDistances));
     this.addSchool(new School("St. Norbert College", "SNC", SNCDistances));
-    this.readInput(dateFilePath, specDateFilePath);
-  } // MidwestConference(String, String)
-  
+    initializeHaveNotPlayed();
+    this.readInput(dateFilePath, specDateFilePath, constraintsFilePath);
+  } // MidwestConference(String, String, String)
+
   public MidwestConference()
   {
     super();
@@ -52,8 +63,27 @@ public class MidwestConference
     this.addSchool(new School("Monmouth College", "MC", MCDistances));
     this.addSchool(new School("Ripon College", "RC", RCDistances));
     this.addSchool(new School("St. Norbert College", "SNC", SNCDistances));
-  }
+    initializeHaveNotPlayed();
+  } 
 
+  private void initializeHaveNotPlayed()
+  {
+    int length = this.schools.size();
+    School curr;
+    School other;
+    for(int i = 0; i < length; i++)
+      {
+        curr = this.schools.get(i);
+        for(int j = 0; j < length; j++)
+          {
+            other = this.schools.get(j);
+            if(!curr.equals(other))
+              {
+                curr.haveNotPlayed.add(other);
+              } // if
+          } // for
+      } // for
+  } // initializeHaveNotPlayed()
   private void populateHashtables()
   {
     //Beloit
@@ -107,15 +137,15 @@ public class MidwestConference
     KCDistances.put("RC", 287);
     KCDistances.put("SNC", 341);
     //Lake Forest
-    KCDistances.put("BC", 90);
-    KCDistances.put("CC", 226);
-    KCDistances.put("GC", 305);
-    KCDistances.put("IC", 262);
-    KCDistances.put("KC", 215);
-    KCDistances.put("LU", 168);
-    KCDistances.put("MC", 230);
-    KCDistances.put("RC", 145);
-    KCDistances.put("SNC", 175);
+    LFCDistances.put("BC", 90);
+    LFCDistances.put("CC", 226);
+    LFCDistances.put("GC", 305);
+    LFCDistances.put("IC", 262);
+    LFCDistances.put("KC", 215);
+    LFCDistances.put("LU", 168);
+    LFCDistances.put("MC", 230);
+    LFCDistances.put("RC", 145);
+    LFCDistances.put("SNC", 175);
     //Lawrence
     LUDistances.put("BC", 157);
     LUDistances.put("CC", 264);

@@ -23,7 +23,7 @@ public class School
    * A table for storing distances this school is from other schools.
    */
   Hashtable<String, Integer> distances;
-  
+
   /**
    * ArrayList for storing schools this school has not played.
    */
@@ -36,6 +36,7 @@ public class School
    * ArrayList for storing schools this school has played twice. 
    */
   ArrayList<School> havePlayedTwice = new ArrayList<School>();
+
   // +--------------+----------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -72,8 +73,71 @@ public class School
   {
     return this.key;
   } // key()
+
+  @Override
+  public boolean equals(Object other)
+  {
+    if (other instanceof School)
+      {
+        return this.equals((School) other);
+      } // if
+    else
+      return false;
+  } // equals(Object)
+
+  public boolean equals(School other)
+  {
+    return ((this.key.compareTo(other.key) == 0)
+           && (this.name.compareTo(other.name) == 0));
+  } // equals(School)
+
   // +----------+--------------------------------------------------------
   // | Mutators |
   // +----------+
+  // +-----------+-------------------------------------------------------
+  // | Utilities |
+  // +-----------+
+
+  public static ArrayList<School> intersection(ArrayList<School> list1,
+                                               ArrayList<School> list2)
+  {
+    ArrayList<School> newList = new ArrayList<School>();
+    for (School item : list1)
+      {
+        if (list2.contains(item))
+          {
+            newList.add(item);
+          } // if
+      } // for
+    return newList;
+  } // intersection(ArrayList<School>, ArrayList<School>)
+
+  public static School getByKey(ArrayList<School> schools, String key)
+    throws Exception
+  {
+    int length = schools.size();
+    for (int i = 0; i < length; i++)
+      {
+        if (schools.get(i).key().compareTo(key) == 0)
+          {
+            return schools.get(i);
+          } // if
+      } // for
+    throw new Exception("Key " + key + " not found.");
+  } // getByKey(ArrayList<School>)
+
+  public void updateHistory(School other)
+  {
+    if (this.haveNotPlayed.contains(other))
+      {
+        this.haveNotPlayed.remove(other);
+        this.havePlayedOnce.add(other);
+      } // if
+    else if (this.havePlayedOnce.contains(other))
+      {
+        this.havePlayedOnce.remove(other);
+        this.havePlayedTwice.add(other);
+      } // else
+  } // updateHistory(School)
 
 } // School
