@@ -187,4 +187,6 @@ public class MidwestConference
     SNCDistances.put("MC", 345);
     SNCDistances.put("RC", 65);
   } // populateHashtables()
+  
+ 
 } // MidwestConference

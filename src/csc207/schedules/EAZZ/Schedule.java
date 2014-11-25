@@ -60,10 +60,17 @@ public class Schedule
    */
   public void scheduleGames()
   {
+    System.out.println("**********Before scheduling************");
+    System.out.println();
+    printInitialStateSchols();
+    printInitialStateGameDay();
+    System.out.println();
+    
     Random random = new Random();
     int numGames = 0;
     for (GameDay gameDay : this.gameDays)
       {
+       // printInitialStateSchols();
         System.out.println("Game Date: " + gameDay.date.toString());
         while (!gameDay.mustPlay.isEmpty())
           {
@@ -225,7 +232,12 @@ public class Schedule
         if (gameDay.canPlay.size() == 1)
           break;
           */
-
+       // printInitialStateSchols();
+        System.out.println("***********After scheduling******************");
+        System.out.println();
+        printInitialStateSchols();
+        printInitialStateGameDay();
+        System.out.println();
       }//for
   } // scheduleGames()
 
@@ -269,6 +281,23 @@ public class Schedule
       } // else
     if (possible.isEmpty())
       {
+       /* ArrayList<School> lessPossible;
+        lessPossible = home.haveNotPlayed;
+        lessPossible.addAll(home.havePlayedOnce);
+        if (gameDay.mustPlay.isEmpty())
+          {
+            lessPossible.retainAll(gameDay.canPlay);
+          } // if
+        else
+          {
+            lessPossible.retainAll(gameDay.mustPlay);
+          }
+        
+        Random random = new Random();
+        
+        int r = random.nextInt(lessPossible.size());
+        return lessPossible.get(r);*/
+        
         return null;
       } // if
     else
@@ -474,5 +503,78 @@ public class Schedule
           } // for
       } // for gameDays
   } // printSchedule(PrintWriter)
+  
+  void printInitialStateSchols(){
+    
+    //go through all the schools and print out havenotPlayed playedOnce playedTwice
+    int length = this.schools.size();
+    System.out.println();
+    System.out.println("-------------------------------");
+    for (int i =0;i< length; i++ ){
+      School temp = this.schools.get(i);
+      
+      System.out.println("School info for " + temp.name);
+     
+      System.out.println("haveNotPlayed ...");
+      
+      for(School school: temp.haveNotPlayed){
+        System.out.println(school.name);
+      }//for
+      System.out.println();
+      System.out.println("havePlayedOnce ...");
+      for(School school: temp.havePlayedOnce){
+        System.out.println(school.name);
+      }//for
+      System.out.println();
+      System.out.println("havePlayedTwice ...");
+      for(School school: temp.havePlayedTwice){
+        System.out.println(school.name);
+      }//for
+      System.out.println();
+      System.out.println("-------------------------------");
+      
+    }//for
+  }//printInitialState
+  
+ void printInitialStateGameDay(){
+    
+    //go through all the schools and print out mustPlay, canPlay,cannotPlay, matches
+    int length = this.gameDays.size();
+    System.out.println();
+    System.out.println("-------------------------------");
+    for (int i =0;i< length; i++ ){
+      GameDay temp = this.gameDays.get(i);
+      
+      System.out.println("GameDay  info for " + temp.date.getTime());
+     
+      System.out.println("mustPlay ...");
+      
+      for(School school: temp.mustPlay){
+        System.out.println(school.name);
+      }//for
+      System.out.println();
+      System.out.println("canPlay ...");
+      for(School school: temp.canPlay){
+        System.out.println(school.name);
+      }//for
+      System.out.println();
+      System.out.println("cannotPlay ...");
+      for(School school: temp.cannotPlay){
+        System.out.println(school.name);
+      }//for
+      
+      ArrayList<Match> matches = temp.matches;
+      for (Match m : matches)
+        {
+          System.out.println(" " + m.home.key() + " vs. " + m.away.key() + " "
+                    + m.home.distances.get(m.away.key()) + " mi.");
+          System.out.println();
+        } // for
+      
+      System.out.println();
+      System.out.println("-------------------------------");
+      
+    }//for
+  }//printInitialState
 } // Schedule  
 

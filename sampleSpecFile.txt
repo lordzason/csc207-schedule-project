@@ -1,5 +1,5 @@
          BC  CC  GC  IC  KC  LFC LU  MC  RC  SNC
-11/22/16  Y   N   Y   N   N   Y   N   Y   N   N 
+11/22/16  Y   N   N   N   N   Y   N   Y   N   N 
 12/02/16  Y   Y   Y   Y   Y   Y   Y   Y   Y   Y 
 12/07/16  Y   Y   Y   Y   Y   Y   Y   Y   Y   Y 
 12/10/16  N   Y   N   Y   Y   N   Y   N   Y   Y
