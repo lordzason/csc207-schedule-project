@@ -53,6 +53,10 @@ public class GameDay
   // +-----------+-------------------------------------------------------
   // | Observers |
   // +-----------+
+  /**
+   * Determine if this day is Friday, Saturday or Sunday.
+   * @return
+   */
   @SuppressWarnings("static-access")
   public boolean isWeekend()
   {
@@ -95,19 +99,34 @@ public class GameDay
       } // else
   } // setAvailability(String, School)
 
+  /**
+   * Sets the availability of all the schools in the ArrayList to the given 
+   * option.
+   * N, cannotPlay.
+   * M, canPlay,
+   * Y, mustPlay.
+   * @param type
+   * @param schools
+   * @throws Exception
+   */
   public void setAvailability(String type, ArrayList<School> schools)
     throws Exception
   {
     int length = schools.size();
-    for(int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
       {
         this.setAvailability(type, schools.get(i));
       } // for 
   } // setAvailability
-  
+
+  /**
+   * Removes a school from either the mustPlay or canPlay list.
+   * Should be called when a school is scheduled.
+   * @param school
+   */
   public void removeSchool(School school)
   {
-    if(this.mustPlay.contains(school))
+    if (this.mustPlay.contains(school))
       {
         this.mustPlay.remove(school);
       } // if
@@ -116,5 +135,5 @@ public class GameDay
         this.canPlay.remove(school);
       } // else
   } // removeSchool(School)
-  
+
 } // GameDay

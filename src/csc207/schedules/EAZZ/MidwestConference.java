@@ -5,6 +5,7 @@ import java.util.Hashtable;
 public class MidwestConference
     extends Schedule
 {
+  //Create Hashtables for all distances to be hard coded in. :(
   private Hashtable<String, Integer> BCDistances =
       new Hashtable<String, Integer>();
   private Hashtable<String, Integer> CCDistances =
@@ -27,7 +28,7 @@ public class MidwestConference
       new Hashtable<String, Integer>();
 
   /**
-   * Constructor for loading gameDays
+   * Constructor for loading gameDays and adding distance hashtables.
    * @param dateFilePath
    * @param specDateFilePath
    * @throws Exception
@@ -64,26 +65,33 @@ public class MidwestConference
     this.addSchool(new School("Ripon College", "RC", RCDistances));
     this.addSchool(new School("St. Norbert College", "SNC", SNCDistances));
     initializeHaveNotPlayed();
-  } 
+  }
 
+  /**
+   * Add all other schools to the HaveNotPlayed list in each school.
+   */
   private void initializeHaveNotPlayed()
   {
     int length = this.schools.size();
     School curr;
     School other;
-    for(int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
       {
         curr = this.schools.get(i);
-        for(int j = 0; j < length; j++)
+        for (int j = 0; j < length; j++)
           {
             other = this.schools.get(j);
-            if(!curr.equals(other))
+            if (!curr.equals(other))
               {
                 curr.haveNotPlayed.add(other);
               } // if
           } // for
       } // for
   } // initializeHaveNotPlayed()
+
+  /**
+   * Hard-code distance hashtables. 
+   */
   private void populateHashtables()
   {
     //Beloit
@@ -147,6 +155,7 @@ public class MidwestConference
     LFCDistances.put("RC", 145);
     LFCDistances.put("SNC", 175);
     //Lawrence
+    
     LUDistances.put("BC", 157);
     LUDistances.put("CC", 264);
     LUDistances.put("GC", 362);
@@ -187,6 +196,5 @@ public class MidwestConference
     SNCDistances.put("MC", 345);
     SNCDistances.put("RC", 65);
   } // populateHashtables()
-  
- 
+
 } // MidwestConference

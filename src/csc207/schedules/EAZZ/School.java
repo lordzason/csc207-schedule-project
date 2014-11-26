@@ -41,7 +41,9 @@ public class School
   // | Constructors |
   // +--------------+
   /**
-   * 
+   * Creates a school object given a name. key, and hashtable of strings (keys
+   * of other schools) and integers (distance of other schools from this 
+   * school.
    * @param name
    * @param key
    * @param distances
@@ -87,17 +89,20 @@ public class School
 
   public boolean equals(School other)
   {
-    return ((this.key.compareTo(other.key) == 0)
-           && (this.name.compareTo(other.name) == 0));
+    return ((this.key.compareTo(other.key) == 0) && (this.name.compareTo(other.name) == 0));
   } // equals(School)
 
-  // +----------+--------------------------------------------------------
-  // | Mutators |
-  // +----------+
   // +-----------+-------------------------------------------------------
   // | Utilities |
   // +-----------+
 
+  /**
+   * Takes two ArrayLists of schools and returns an ArrayList of schools that 
+   * are in both list1 and list2. 
+   * @param list1
+   * @param list2
+   * @return
+   */
   public static ArrayList<School> intersection(ArrayList<School> list1,
                                                ArrayList<School> list2)
   {
@@ -112,6 +117,13 @@ public class School
     return newList;
   } // intersection(ArrayList<School>, ArrayList<School>)
 
+  /**
+   * Given an array list and a key, return the School that has that key.
+   * @param schools
+   * @param key
+   * @return
+   * @throws Exception
+   */
   public static School getByKey(ArrayList<School> schools, String key)
     throws Exception
   {
@@ -126,6 +138,12 @@ public class School
     throw new Exception("Key " + key + " not found.");
   } // getByKey(ArrayList<School>)
 
+  /**
+   * Given a school, change where the school exists in this school's ArrayLists
+   * of haveNotPlayed, havePlayedOnce, and havePlayedTwice. This should be 
+   * called when we schedule two schools to play a game. Once for each school.
+   * @param other
+   */
   public void updateHistory(School other)
   {
     if (this.haveNotPlayed.contains(other))

@@ -25,17 +25,19 @@ public class Schedule
   /**
    * Median school distances
    */
-
   static int MEDIAN_DISTANCE = 270;
 
+  /**
+   * Distance used for filtering schools by distance
+   */
   int max_distance = MEDIAN_DISTANCE;
 
   // +--------------+----------------------------------------------------
   // | Constructors |
   // +--------------+
   /**
-   * Creates a new schedule object given two file paths, one for dates, 
-   * and one for special dates. 
+   * Creates a new schedule object given three file paths, one for dates, 
+   * one for special dates, and one for constraints. 
    * @param dateFilePath
    * @param specDateFilePath
    * @throws Exception
@@ -46,10 +48,12 @@ public class Schedule
     readInput(dateFilePath, specDateFilePath, constraintsFilePath);
   } // Schedule(String, String)
 
+  /**
+   * Creates a blank schedule object.
+   */
   public Schedule()
   {
-
-  }
+  } // Schedule()
 
   // +----------+-------------------------------------------------
   // | Mutators |
@@ -60,18 +64,10 @@ public class Schedule
    */
   public void scheduleGames()
   {
-    System.out.println("**********Before scheduling************");
-    System.out.println();
-    printInitialStateSchols();
-    printInitialStateGameDay();
-    System.out.println();
-    
     Random random = new Random();
     int numGames = 0;
     for (GameDay gameDay : this.gameDays)
-      {
-       // printInitialStateSchols();
-        System.out.println("Game Date: " + gameDay.date.toString());
+      { 
         while (!gameDay.mustPlay.isEmpty())
           {
             //pick a random index to select team from mustPlay
@@ -79,9 +75,6 @@ public class Schedule
 
             //get school at randomIndex as home team
             School home = gameDay.mustPlay.get(randomIndex);
-
-            System.out.println("Home School: " + home.name);
-
             School away = awayChooser(home, gameDay);
             if (away != null)
               {
@@ -94,8 +87,6 @@ public class Schedule
 
                 home.updateHistory(away);
                 away.updateHistory(home);
-                System.out.println("Away School: " + away.name);
-                System.out.println("Num games:" + ++numGames);
               } // if not null
             else
               {
@@ -104,14 +95,11 @@ public class Schedule
           } // while mustPLay
         while (!gameDay.canPlay.isEmpty())
           {
-            System.out.println("within CanPlay");
             //pick a random index to select team from mustPlay
             int randomIndex = random.nextInt(gameDay.canPlay.size());
 
             //get school at randomIndex as home team
             School home = gameDay.canPlay.get(randomIndex);
-
-            System.out.println("Home School: " + home.name);
 
             School away = awayChooser(home, gameDay);
             if (away != null)
@@ -125,119 +113,12 @@ public class Schedule
 
                 home.updateHistory(away);
                 away.updateHistory(home);
-                System.out.println("Away School: " + away.name);
-                System.out.println("Num games:" + ++numGames);
               } // if not null
             else
               {
                 break;
               } // else
           } // while
-        //-----------------------------------------------------\\
-
-        /*
-        //get school for away
-        School away =
-            awayChooser(gameDay.mustPlay, gameDay.canPlay, home,
-                        gameDay.matches);
-
-        //home school cannot find a match in mustPlay and canPlay
-        if (away == null)
-          {
-            //find the closest school
-          }//if
-        else
-          {
-            //update the home
-            home.haveNotPlayed.remove(away);
-
-            if (home.havePlayedOnce.contains(away))
-              {
-                home.havePlayedTwice.add(away);
-              }
-            else
-              {
-                home.havePlayedOnce.add(away);
-              }
-
-            //update the away
-            away.haveNotPlayed.remove(home);
-
-            if (away.havePlayedOnce.contains(home))
-              {
-                away.havePlayedTwice.add(home);
-              }
-            else
-              {
-                away.havePlayedOnce.add(home);
-              }
-
-          }
-
-        //set up match
-        gameDay.matches.add(new Match(home, away));
-        }//while
-
-        while (gameDay.canPlay.size() > 0)
-        {
-        int randIndex = random.nextInt(gameDay.canPlay.size());
-
-        //get school at random Index as home team
-
-        School home = gameDay.canPlay.get(randIndex);
-        gameDay.canPlay.remove(randIndex);
-
-        //get away school
-
-        School away = awayChooser(gameDay.canPlay, home, gameDay.matches);
-
-        //set up match
-
-        if (away == null)
-          {
-            //find the closest school
-          }//if
-        else
-          {
-        
-          //update the home
-            home.haveNotPlayed.remove(away);
-
-            if (home.havePlayedOnce.contains(away))
-              {
-                home.havePlayedTwice.add(away);
-              }
-            else
-              {
-                home.havePlayedOnce.add(away);
-              }
-
-            //update the away
-            away.haveNotPlayed.remove(home);
-
-            if (away.havePlayedOnce.contains(home))
-              {
-                away.havePlayedTwice.add(home);
-              }
-            else
-              {
-                away.havePlayedOnce.add(home);
-              }
-          }
-
-        //set up match
-        gameDay.matches.add(new Match(home, away));
-
-        // when there is only one school left in canPlay
-        if (gameDay.canPlay.size() == 1)
-          break;
-          */
-       // printInitialStateSchols();
-        System.out.println("***********After scheduling******************");
-        System.out.println();
-        printInitialStateSchols();
-        printInitialStateGameDay();
-        System.out.println();
       }//for
   } // scheduleGames()
 
@@ -250,12 +131,19 @@ public class Schedule
     this.schools.add(school);
   } // addSchool(School)
 
+  /**
+   * Given a home school and a certain GameDay, it returns either a team that
+   * home can play on that day, or null if there is no team that meets the 
+   * constraints.
+   * @param home
+   * @param gameDay
+   * @return
+   */
   public School awayChooser(School home, GameDay gameDay)
   {
-
-    ArrayList<School> possible;
+    ArrayList<School> possible = new ArrayList<School>();
     //*May want to only add one of the arrays to possible*//
-    possible = home.haveNotPlayed;
+    possible.addAll(home.haveNotPlayed);
     possible.addAll(home.havePlayedOnce);
     if (!gameDay.isWeekend())
       {
@@ -270,7 +158,7 @@ public class Schedule
         possible.retainAll(gameDay.mustPlay);
         if (possible.isEmpty())
           {
-            possible = home.haveNotPlayed;
+            possible.addAll(home.haveNotPlayed);
             possible.addAll(home.havePlayedOnce);
             if (!gameDay.isWeekend())
               {
@@ -281,23 +169,6 @@ public class Schedule
       } // else
     if (possible.isEmpty())
       {
-       /* ArrayList<School> lessPossible;
-        lessPossible = home.haveNotPlayed;
-        lessPossible.addAll(home.havePlayedOnce);
-        if (gameDay.mustPlay.isEmpty())
-          {
-            lessPossible.retainAll(gameDay.canPlay);
-          } // if
-        else
-          {
-            lessPossible.retainAll(gameDay.mustPlay);
-          }
-        
-        Random random = new Random();
-        
-        int r = random.nextInt(lessPossible.size());
-        return lessPossible.get(r);*/
-        
         return null;
       } // if
     else
@@ -308,68 +179,14 @@ public class Schedule
       } // else
   } // awayChooser(School, GameDay)
 
-  /*
-  public School awayChooser(ArrayList<School> mustPlay,
-                            ArrayList<School> canPlay, School home,
-                            ArrayList<Match> played)
-  {
-    School temp = awayChooser(mustPlay, home, played);
-    if (temp != null)
-      {
-        return temp;
-      }
-    else
-      {
-        return awayChooser(canPlay, home, played);
-      }
-  }//awayChooser
 
-  public School awayChooser(ArrayList<School> possibleSchools, School home,
-                            ArrayList<Match> played)
-  {
-    Random random = new Random();
-
-    //check if there is at least one school that is within distance
-    if (anyWithinDistance(possibleSchools, home.distances))
-      {
-
-        ArrayList<School> temp = possibleSchools;
-
-        //randomly pick a school and check if it is within distance
-        while (temp.size() > 0)
-          {
-            
-
-            School possibleAway = temp.get(r);
-            //check if distance fits requirement
-            if (home.distances.get(possibleAway.key()) <= this.max_distance
-                && notScheduled(possibleAway, played))
-              {
-                int indexInPossibleSchools =
-                    possibleSchools.indexOf(possibleAway);
-                possibleSchools.remove(indexInPossibleSchools);
-                return possibleAway;
-              } // if
-            temp.remove(r);
-          } // while 
-      }//if 
-    return null;
-  }//awayChooser
-
-  public boolean anyWithinDistance(ArrayList<School> mustPlay,
-                                   Hashtable<String, Integer> distances)
-  {
-
-    for (int i = 0; i < mustPlay.size(); i++)
-      {
-        if (distances.get(mustPlay.get(i).key) < this.max_distance)
-          {
-            return true;
-          }
-      }
-    return false;
-  }//anyWithDistance
-  */
+  /**
+   * Takes a list of schools and a hashtable of distances and returns an 
+   * ArrayList of all the schools that are less than the MEDIAN_DISTANCE.
+   * @param list
+   * @param distances
+   * @return
+   */
   public ArrayList<School>
     allWithinDistance(ArrayList<School> list,
                       Hashtable<String, Integer> distances)
@@ -385,24 +202,14 @@ public class Schedule
     return newList;
   } // allWithinDistance
 
-  public boolean notScheduled(School petitioner, ArrayList<Match> matches)
-  {
-
-    for (Match match : matches)
-      {
-        if (match.home == petitioner || match.away == petitioner)
-          return false;
-      }
-    return true;
-  }
-
   // +-----------------+-------------------------------------------------
   // | Local Utilities |
   // +-----------------+
   /**
-   * Reads input given two filepaths.
+   * Reads input given three filepaths.
    * @param dateFilePath
    * @param specDateFilePath
+   * @param constraintsFilePath
    * @throws Exception
    */
   void readInput(String dateFilePath, String specDateFilePath,
@@ -466,6 +273,14 @@ public class Schedule
     this.gameDays.add(gameDay);
   } // loadDates(String)
 
+  /**
+   * Sets information in the object based on the information in the 
+   * constraints file. 
+   * @param keys
+   * @param playOnce1
+   * @param playOnce2
+   * @throws Exception
+   */
   void loadConstraints(String keys, String playOnce1, String playOnce2)
     throws Exception
   {
@@ -487,12 +302,12 @@ public class Schedule
    * @param pen
    */
   @SuppressWarnings("static-access")
-  public void printSchedule(PrintWriter pen)
+  public int printSchedule(PrintWriter pen)
   {
-    //STUB
+    int numGames = 0;
     for (GameDay day : this.gameDays)
       {
-       // pen.println(day.date.MONTH + "/" + day.date.DATE + "/" + day.date.YEAR);
+        // pen.println(day.date.MONTH + "/" + day.date.DATE + "/" + day.date.YEAR);
         pen.println(day.date.getTime());
         ArrayList<Match> matches = day.matches;
         for (Match m : matches)
@@ -500,81 +315,92 @@ public class Schedule
             pen.print(" " + m.home.key() + " vs. " + m.away.key() + " "
                       + m.home.distances.get(m.away.key()) + " mi.");
             pen.println();
+            numGames++;
           } // for
       } // for gameDays
+    pen.println("Number of games: " + numGames);
+    return numGames;
   } // printSchedule(PrintWriter)
-  
-  void printInitialStateSchols(){
-    
+
+  void printInitialStateSchols()
+  {
     //go through all the schools and print out havenotPlayed playedOnce playedTwice
     int length = this.schools.size();
     System.out.println();
     System.out.println("-------------------------------");
-    for (int i =0;i< length; i++ ){
-      School temp = this.schools.get(i);
-      
-      System.out.println("School info for " + temp.name);
-     
-      System.out.println("haveNotPlayed ...");
-      
-      for(School school: temp.haveNotPlayed){
-        System.out.println(school.name);
+    for (int i = 0; i < length; i++)
+      {
+        School temp = this.schools.get(i);
+
+        System.out.println("School info for " + temp.name);
+
+        System.out.println("haveNotPlayed ...");
+
+        for (School school : temp.haveNotPlayed)
+          {
+            System.out.println(school.name);
+          }//for
+        System.out.println();
+        System.out.println("havePlayedOnce ...");
+        for (School school : temp.havePlayedOnce)
+          {
+            System.out.println(school.name);
+          }//for
+        System.out.println();
+        System.out.println("havePlayedTwice ...");
+        for (School school : temp.havePlayedTwice)
+          {
+            System.out.println(school.name);
+          }//for
+        System.out.println();
+        System.out.println("-------------------------------");
       }//for
-      System.out.println();
-      System.out.println("havePlayedOnce ...");
-      for(School school: temp.havePlayedOnce){
-        System.out.println(school.name);
-      }//for
-      System.out.println();
-      System.out.println("havePlayedTwice ...");
-      for(School school: temp.havePlayedTwice){
-        System.out.println(school.name);
-      }//for
-      System.out.println();
-      System.out.println("-------------------------------");
-      
-    }//for
   }//printInitialState
-  
- void printInitialStateGameDay(){
-    
+
+  void printInitialStateGameDay()
+  {
     //go through all the schools and print out mustPlay, canPlay,cannotPlay, matches
     int length = this.gameDays.size();
     System.out.println();
     System.out.println("-------------------------------");
-    for (int i =0;i< length; i++ ){
-      GameDay temp = this.gameDays.get(i);
-      
-      System.out.println("GameDay  info for " + temp.date.getTime());
-     
-      System.out.println("mustPlay ...");
-      
-      for(School school: temp.mustPlay){
-        System.out.println(school.name);
+    for (int i = 0; i < length; i++)
+      {
+        GameDay temp = this.gameDays.get(i);
+
+        System.out.println("GameDay  info for " + temp.date.getTime());
+
+        System.out.println("mustPlay ...");
+
+        for (School school : temp.mustPlay)
+          {
+            System.out.println(school.name);
+          }//for
+        System.out.println();
+        System.out.println("canPlay ...");
+        for (School school : temp.canPlay)
+          {
+            System.out.println(school.name);
+          }//for
+        System.out.println();
+        System.out.println("cannotPlay ...");
+        for (School school : temp.cannotPlay)
+          {
+            System.out.println(school.name);
+          }//for
+
+        ArrayList<Match> matches = temp.matches;
+        for (Match m : matches)
+          {
+            System.out.println(" " + m.home.key() + " vs. " + m.away.key()
+                               + " " + m.home.distances.get(m.away.key())
+                               + " mi.");
+            System.out.println();
+          } // for
+
+        System.out.println();
+        System.out.println("-------------------------------");
+
       }//for
-      System.out.println();
-      System.out.println("canPlay ...");
-      for(School school: temp.canPlay){
-        System.out.println(school.name);
-      }//for
-      System.out.println();
-      System.out.println("cannotPlay ...");
-      for(School school: temp.cannotPlay){
-        System.out.println(school.name);
-      }//for
-      
-      ArrayList<Match> matches = temp.matches;
-      for (Match m : matches)
-        {
-          System.out.println(" " + m.home.key() + " vs. " + m.away.key() + " "
-                    + m.home.distances.get(m.away.key()) + " mi.");
-          System.out.println();
-        } // for
-      
-      System.out.println();
-      System.out.println("-------------------------------");
-      
-    }//for
   }//printInitialState
 } // Schedule  
 
